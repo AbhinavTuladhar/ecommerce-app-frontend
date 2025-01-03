@@ -15,6 +15,7 @@ const eslintConfig = [
   ...compat.plugins('simple-import-sort', 'unused-imports'),
   {
     rules: {
+      '@next/next/no-html-link-for-pages': 'off',
       'simple-import-sort/imports': [
         'error',
         {
