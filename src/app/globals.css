@@ -3,19 +3,36 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Minimum gap to the margin */
+  --gap: clamp(1rem, 4vw, 1.875rem);
+  --widest-gap: minmax(var(--gap), 1fr);
+  --max-width: 1320px;
+  /* Maximum gap to the margin is 64px, feature = 64px - gap */
+  --feature: clamp(0rem, -0.708rem + 3.148vw, 2.125rem);
+  --content-width: min(var(--max-width), 100% - ((var(--gap) + var(--feature)) * 2));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.content-grid {
+  display: grid;
+  grid-template-columns:
+    [full-width-start] var(--widest-gap)
+    [feature-start] var(--feature)
+    [content-start] var(--content-width)
+    [content-end]
+    var(--feature) [feature-end]
+    var(--widest-gap) [full-width-end];
+
+  > * {
+    grid-column: full-width;
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  > .full-width {
+    grid-column: full-width;
+  }
+  > .content {
+    grid-column: content;
+  }
+  > .feature {
+    grid-column: feature;
+  }
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 
+import Navbar from '@/components/navbar'
+import ScreenSize from '@/components/screen-size'
 import { ReactQueryProvider } from '@/providers'
 
 import './globals.css'
@@ -28,7 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          <Navbar />
+          <div className="min-h-dvh bg-slate-950 text-white">{children}</div>
+          <ScreenSize />
+        </ReactQueryProvider>
       </body>
     </html>
   )
