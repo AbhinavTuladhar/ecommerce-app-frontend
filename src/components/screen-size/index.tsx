@@ -23,7 +23,7 @@ const ScreenSize = () => {
   }, [])
 
   return (
-    <div className="fixed bottom-6 right-20 flex gap-x-4 rounded-full border border-gray-400 bg-black px-4 py-1 font-mono text-sm text-white">
+    <div className="fixed right-20 bottom-6 flex gap-x-4 rounded-full border border-gray-400 bg-black px-4 py-1 font-mono text-sm text-white">
       <span>
         {dimensions.width} x {dimensions.height}
       </span>
