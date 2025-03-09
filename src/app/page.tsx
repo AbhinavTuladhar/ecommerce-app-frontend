@@ -12,11 +12,11 @@ export default function Home() {
   })
 
   if (isLoading) {
-    return <div> Loading... </div>
+    return <div className=""> Loading... </div>
   }
 
   return (
-    <div className="min-h-dvh bg-slate-800 text-white">
+    <div className="">
       <pre>{JSON.stringify(data, null, 4)}</pre>
     </div>
   )
