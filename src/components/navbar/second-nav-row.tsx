@@ -10,10 +10,10 @@ const icons = [
 ]
 
 const SecondNavRow: React.FC = () => (
-  <div className="content flex items-center justify-between">
+  <div className="flex items-center justify-between py-3">
     <h1 className="text-5xl font-bold"> Logo </h1>
     <input
-      className="min-w-60 max-w-64 rounded-lg border border-gray-500 bg-slate-700 px-2 py-1.5"
+      className="max-w-64 min-w-60 rounded-lg border border-gray-500 bg-slate-700 px-2 py-1.5"
       type="search"
       placeholder="Search"
     />
