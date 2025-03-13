@@ -57,3 +57,11 @@
     grid-column: feature;
   }
 }
+
+.content-grid--content > * {
+  grid-column: content;
+}
+
+.content-grid--feature > * {
+  grid-column: feature;
+}
