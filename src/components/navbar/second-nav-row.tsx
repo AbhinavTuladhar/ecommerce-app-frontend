@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { CiHeart, CiShoppingCart, CiUser } from 'react-icons/ci'
 
 const elementClassName = 'size-6'
@@ -11,7 +12,9 @@ const icons = [
 
 const SecondNavRow: React.FC = () => (
   <div className="flex items-center justify-between py-3">
-    <h1 className="text-5xl font-bold"> Logo </h1>
+    <Link href="/">
+      <h1 className="text-5xl font-bold"> Logo </h1>
+    </Link>
     <input
       className="max-w-64 min-w-60 rounded-lg border border-gray-500 bg-slate-700 px-2 py-1.5"
       type="search"
