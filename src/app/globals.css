@@ -3,6 +3,7 @@
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --aspect-product-card: auto 202 / 175;
 }
 
 /*
@@ -31,6 +32,10 @@
   /* Maximum gap to the margin is 64px, feature = 64px - gap */
   --feature: clamp(0rem, -0.708rem + 3.148vw, 2.125rem);
   --content-width: min(var(--max-width), 100% - ((var(--gap) + var(--feature)) * 2));
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 .content-grid {
