@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${geistSans.className} min-h-dvh bg-slate-950 text-white antialiased`}
+        className={`${geistSans.className} flex min-h-dvh flex-col bg-slate-900 text-white antialiased`}
       >
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>

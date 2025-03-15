@@ -16,7 +16,7 @@ export default function ClientLayout({
   return (
     <>
       <Navbar />
-      <main className="py-10">{children}</main>
+      <main className="flex-1 py-10">{children}</main>
       <ScreenSize />
     </>
   )
