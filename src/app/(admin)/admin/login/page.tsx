@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { FaEye } from 'react-icons/fa'
 import { z } from 'zod'
 
 import Button from '@/components/ui/button'
@@ -13,13 +12,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 type LoginFormValues = z.infer<typeof LoginSchema>
 
 const AdminLogin = () => {
-  const [showPassword, setShowPassword] = useState(false)
-
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
   })
 
-  const { register, handleSubmit, setError, reset, getValues } = methods
+  const { register, handleSubmit, setError, reset } = methods
 
   const onSubmit = (data: LoginFormValues) => {
     if (data.password !== 'admin') {
@@ -40,19 +37,7 @@ const AdminLogin = () => {
         <FormProvider {...methods}>
           <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
             <InputField {...register('email')} label="Email" type="email" />
-            <div className="relative">
-              {getValues().password ? (
-                <FaEye
-                  className="absolute right-3 bottom-3 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                />
-              ) : null}
-              <InputField
-                {...register('password')}
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-              />
-            </div>
+            <InputField {...register('password')} label="Password" type="password" />
             <Button> Login </Button>
           </form>
         </FormProvider>
