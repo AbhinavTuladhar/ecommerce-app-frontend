@@ -1,13 +1,11 @@
-import axios from 'axios'
-
 import { Product, SuccessResponse } from '@/types'
+
+import Api from './api'
 
 class ProductService {
   static async getProducts() {
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/product`
-
     try {
-      const response = await axios.get<SuccessResponse<Product[]>>(url)
+      const response = await Api.get<SuccessResponse<Product[]>>('/product')
       return response.data
     } catch (error) {
       console.error(error)
@@ -15,10 +13,8 @@ class ProductService {
   }
 
   static async getProduct(id: string) {
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/${id}`
-
     try {
-      const response = await axios.get<SuccessResponse<Product>>(url)
+      const response = await Api.get<SuccessResponse<Product>>(`/product/${id}`)
       return response.data
     } catch (error) {
       console.error(error)
