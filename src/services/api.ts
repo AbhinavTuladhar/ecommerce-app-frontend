@@ -8,6 +8,8 @@ const Api = axios.create({
   },
 })
 
+Api.defaults.withCredentials = true
+
 Api.interceptors.response.use(
   response => response,
   error => {
