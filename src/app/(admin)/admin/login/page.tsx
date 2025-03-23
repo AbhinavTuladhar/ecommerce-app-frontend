@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -61,16 +61,20 @@ const AdminLogin = () => {
   // If the admin is already logged in, redirect to the dashboard
   const { isLoading, isError } = useCurrentUser()
 
+  // No error implies that the admin is already logged in, so redirect to the dashboard
+  useEffect(() => {
+    if (!isLoading && !isError) {
+      push('/admin/dashboard')
+    }
+  }, [isError, isLoading, push])
+
   if (isLoading) {
     return <FullScreenLayout> Loading...</FullScreenLayout>
   }
 
   if (!isError) {
-    push('/admin/dashboard')
     return
   }
-
-  // No error implies that the admin is already logged in, so redirect to the dashboard
 
   return (
     <div className="grid flex-1 place-items-center">
