@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -26,9 +27,11 @@ Api.interceptors.response.use(
         // Handle server errors
         console.error('Server error - try again later')
       } else if (statusCode === 403) {
+        toast.error('This resource is forbidden.')
         console.error('Authentication error')
       } else {
         // Handle other types of errors
+        toast.error(errorMessage)
         console.error(`Error ${statusCode}: ${errorMessage}`)
       }
     } else if (error.request) {
