@@ -43,8 +43,14 @@ class AuthService {
   }
 
   static async checkIfAdmin() {
-    const response = await Api.get('/auth/is-admin')
-    return response.status === 200
+    try {
+      const response = await Api.get('/auth/is-admin')
+      return response.status === 200
+    } catch (error) {
+      await Api.get('/auth/refresh')
+      console.error(error)
+      return false
+    }
   }
 
   /**
