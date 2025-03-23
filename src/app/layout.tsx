@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
+import { ToastContainer } from 'react-toastify'
 
 import { ReactQueryProvider } from '@/providers'
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         className={`${geistSans.className} flex min-h-dvh flex-col bg-slate-900 text-white antialiased`}
       >
         <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ToastContainer autoClose={2000} theme="dark" />
       </body>
     </html>
   )
