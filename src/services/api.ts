@@ -13,7 +13,7 @@ Api.defaults.withCredentials = true
 
 Api.interceptors.response.use(
   response => response,
-  error => {
+  async error => {
     if (error.response) {
       // Server responded with a status code out of 2xx range
       const statusCode = error.response.status
@@ -21,8 +21,18 @@ Api.interceptors.response.use(
 
       // Handle different status codes accordingly
       if (statusCode === 401) {
-        // Handle unauthorized error, for example by redirecting to login
-        console.error('Unauthorized access - redirecting to login')
+        /**
+         * If the user is not authenticated, attempt to refresh the token
+         */
+        // try {
+        //   // const url = `${ process.env.NEXT_PUBLIC_BACKEND_URL }/auth/refresh`
+        //   // const response = await axios.get(url, { withCredentials: true })
+        //   const response = await Api.get('/auth/refresh')
+        //   return response
+        // } catch (error) {
+        //   console.error(error)
+        // }
+        console.error('Unauthorized access.')
       } else if (statusCode === 500) {
         // Handle server errors
         console.error('Server error - try again later')
