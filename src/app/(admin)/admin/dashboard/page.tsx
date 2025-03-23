@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 
 import Button from '@/components/ui/button'
 import AdminGuard from '@/layouts/admin-guard'
+import Container from '@/layouts/container'
 import AuthService from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 const Dashboard = () => {
@@ -24,10 +25,10 @@ const Dashboard = () => {
 
   return (
     <AdminGuard>
-      <div className="content-grid content-grid--content">
+      <Container>
         <div>Admin dashboard</div>
         <Button onClick={() => mutate()}> Logout </Button>
-      </div>
+      </Container>
     </AdminGuard>
   )
 }
