@@ -3,6 +3,7 @@
 import React from 'react'
 
 import ProductCard from '@/components/product-card'
+import Container from '@/layouts/container'
 import ProductService from '@/services/product.service'
 import { useQuery } from '@tanstack/react-query'
 
@@ -13,27 +14,39 @@ const ProductPage = () => {
   })
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <Container>
+        <span>Loading... </span>
+      </Container>
+    )
   }
 
   if (isError) {
-    return <div>Error</div>
+    return (
+      <Container>
+        <span> error </span>
+      </Container>
+    )
   }
 
   if (!data) {
-    return <div>No data</div>
+    return (
+      <Container>
+        <span> No data </span>
+      </Container>
+    )
   }
 
   const { data: productData } = data
 
   return (
-    <div className="content-grid content-grid--content">
+    <Container>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {productData.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
-    </div>
+    </Container>
   )
 }
 
