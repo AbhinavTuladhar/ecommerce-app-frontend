@@ -30,6 +30,11 @@ class AuthService {
     const response = await Api.get('/auth/is-admin')
     return response.status === 200
   }
+
+  static async logout() {
+    const response = await Api.post('/auth/logout')
+    return response
+  }
 }
 
 export default AuthService

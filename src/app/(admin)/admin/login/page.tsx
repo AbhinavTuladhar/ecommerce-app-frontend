@@ -9,6 +9,7 @@ import { z } from 'zod'
 import Button from '@/components/ui/button'
 import InputField from '@/components/ui/input-field'
 import useCurrentUser from '@/hooks/useCurrentUser'
+import FullScreenLayout from '@/layouts/full-screen-layout'
 import AuthService from '@/services/auth.service'
 import { LoginSchema } from '@/types/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -61,7 +62,7 @@ const AdminLogin = () => {
   const { isLoading, isError } = useCurrentUser()
 
   if (isLoading) {
-    return <div> Loading...</div>
+    return <FullScreenLayout> Loading...</FullScreenLayout>
   }
 
   if (!isError) {

@@ -47,6 +47,7 @@ html {
     [content-end]
     var(--feature) [feature-end]
     var(--widest-gap) [full-width-end];
+  justify-items: flex-start;
 
   > * {
     grid-column: full-width;
