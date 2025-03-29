@@ -41,10 +41,14 @@ const Logout = () => {
       </div>
       <Modal isOpen={isModalOpen} closeModal={closeModal}>
         <div className="flex flex-col gap-y-4">
-          <h2 className="text-3xl font-bold">Are you sure you want to log out?</h2>
+          <h2 className="text-3xl font-bold text-slate-700">Are you sure you want to log out?</h2>
           <div className="flex justify-center gap-x-10">
-            <Button onClick={closeModal}> Cancel</Button>
-            <Button onClick={handleLogout}> Confirm </Button>
+            <Button size="sm" onClick={closeModal}>
+              Cancel
+            </Button>
+            <Button variant="danger" size="sm" onClick={handleLogout}>
+              Confirm
+            </Button>
           </div>
         </div>
       </Modal>
