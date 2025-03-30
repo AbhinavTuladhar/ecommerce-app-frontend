@@ -24,11 +24,13 @@ const InputField = <InputValues extends FieldValues>({
     <div className="flex flex-col gap-y-1">
       {label ? <label className="text-sm">{label}</label> : null}
       <Input {...props} />
-      <ErrorMessage
-        errors={errors}
-        name={props.name}
-        render={({ message }) => <span className="text-sm text-red-400">{message}</span>}
-      />
+      <span className="h-5 min-h-5">
+        <ErrorMessage
+          errors={errors}
+          name={props.name}
+          render={({ message }) => <span className="text-sm text-red-400">{message}</span>}
+        />
+      </span>
     </div>
   )
 }

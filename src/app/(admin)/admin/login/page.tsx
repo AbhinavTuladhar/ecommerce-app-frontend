@@ -32,7 +32,7 @@ const LoginForm = () => {
     } catch (error) {
       console.error(error)
       setError('password', {
-        message: 'The credentials are not invalid.',
+        message: 'The credentials are invalid',
       })
       return
     }
@@ -45,10 +45,10 @@ const LoginForm = () => {
     <div className="w-100 max-w-[calc(100vw-2rem)] space-y-8 rounded-lg border border-gray-500 bg-slate-800 px-10 py-20">
       <h2 className="text-3xl font-bold"> Login as Admin </h2>
       <FormProvider {...methods}>
-        <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <form className="grid gap-0" onSubmit={handleSubmit(onSubmit)}>
           <InputField {...register('email')} label="Email" type="email" />
           <InputField {...register('password')} label="Password" type="password" />
-          <Button> Login </Button>
+          <Button className="mt-2"> Login </Button>
         </form>
       </FormProvider>
     </div>
