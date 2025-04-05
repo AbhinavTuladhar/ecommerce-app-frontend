@@ -25,7 +25,7 @@ const Modal: FC<ModalProps> = ({ isOpen, closeModal, children }) => {
         >
           <div
             onClick={e => e.stopPropagation()}
-            className="relative z-50 rounded bg-white px-10 py-10 text-black"
+            className="relative z-50 rounded bg-gray-200 px-10 py-16 text-black"
           >
             {children}
           </div>

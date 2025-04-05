@@ -7,6 +7,8 @@ import Input from '@/components/ui/input'
 import ProductService from '@/services/product.service'
 import { useQuery } from '@tanstack/react-query'
 
+import { ProductTable } from './_components'
+
 const Page = () => {
   const {
     data: products,
@@ -41,7 +43,7 @@ const Page = () => {
     return <div>No products</div>
   }
 
-  const {} = products
+  const { data: productData } = products
 
   return (
     <div>
@@ -49,7 +51,7 @@ const Page = () => {
         <h2> Product List</h2>
         <Input {...register('searchString')} />
       </div>
-      <pre> {JSON.stringify(products, null, 2)}</pre>
+      <ProductTable productData={productData} />
     </div>
   )
 }
