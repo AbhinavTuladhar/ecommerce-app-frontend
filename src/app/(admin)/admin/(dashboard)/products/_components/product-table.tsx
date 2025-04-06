@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { toast } from 'react-toastify'
 
 import ImageWithFallback from '@/components/image-with-fallback'
 import ResourceActions from '@/components/resource-actions'
@@ -10,11 +11,26 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import ProductService from '@/services/product.service'
 import { Product } from '@/types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-type ProductRowProps = Pick<Product, 'category' | 'id' | 'image' | 'name' | 'price' | 'quantity'>
+type ProductRowProps = Pick<
+  Product,
+  'category' | 'id' | 'image' | 'name' | 'price' | 'quantity'
+> & {
+  onDelete: (id: string) => void
+}
 
-const ProductRow: FC<ProductRowProps> = ({ category, id, image, name, price, quantity }) => (
+const ProductRow: FC<ProductRowProps> = ({
+  category,
+  id,
+  image,
+  name,
+  price,
+  quantity,
+  onDelete,
+}) => (
   <TableRow>
     <TableCell>
       <div className="flex items-center gap-x-4">
@@ -32,7 +48,7 @@ const ProductRow: FC<ProductRowProps> = ({ category, id, image, name, price, qua
     <TableCell>{quantity}</TableCell>
     <TableCell>{category.name}</TableCell>
     <TableCell>
-      <ResourceActions editLink={`/admin/products/${id}`} onDelete={() => {}} />
+      <ResourceActions editLink={`/admin/products/${id}`} onDelete={() => onDelete(id)} />
     </TableCell>
   </TableRow>
 )
@@ -42,16 +58,35 @@ interface ProductTableProps {
 }
 
 export const ProductTable: FC<ProductTableProps> = ({ productData }) => {
+  const query = useQueryClient()
+
   const headerNames = ['Product', 'Price', 'Quantity', 'Category', 'Actions']
+
+  const { mutate: deleteProduct } = useMutation({
+    mutationFn: ProductService.deleteProduct,
+    onSuccess: () => {
+      query.invalidateQueries({ queryKey: ['products'] })
+      toast.success('Product deleted successfully')
+    },
+    onError: () => {
+      toast.error('Product delete failed')
+    },
+  })
+
+  const handleDelete = (id: string) => {
+    deleteProduct(id)
+  }
 
   return (
     <Table>
       <TableHeader>
-        {headerNames.map(name => (
-          <TableHead className="tracking-wider uppercase" key={name}>
-            {name}
-          </TableHead>
-        ))}
+        <TableRow>
+          {headerNames.map(name => (
+            <TableHead className="tracking-wider uppercase" key={name}>
+              {name}
+            </TableHead>
+          ))}
+        </TableRow>
       </TableHeader>
       <TableBody>
         {productData.map(({ category, id, image, name, price, quantity }) => (
@@ -63,6 +98,7 @@ export const ProductTable: FC<ProductTableProps> = ({ productData }) => {
             name={name}
             price={price}
             quantity={quantity}
+            onDelete={handleDelete}
           />
         ))}
       </TableBody>

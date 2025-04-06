@@ -9,7 +9,7 @@ import ConfirmationModal from '../ui/confirmation-modal'
 
 interface AdminProps {
   editLink: string
-  onDelete: (_id: string) => void
+  onDelete: () => void
 }
 
 const ActionButtonContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => (
@@ -21,11 +21,12 @@ const ActionButtonContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, .
   </div>
 )
 
-const ResourceActions: FC<AdminProps> = ({ editLink }) => {
+const ResourceActions: FC<AdminProps> = ({ editLink, onDelete }) => {
   const { value: isModalOpen, setValue: openModal, resetValue: closeModal } = useToggle()
 
   const handleDelete = () => {
     closeModal()
+    onDelete()
   }
 
   return (
