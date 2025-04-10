@@ -25,7 +25,7 @@ const NavigationMenuItem: FC<MenuItemProps> = ({ Icon, label, link }) => {
     <Link
       href={`/admin/${link}`}
       className={classNames(
-        'flex items-center gap-x-4 rounded px-4 py-2 duration-300 hover:bg-blue-900',
+        'flex items-center gap-x-4 rounded px-4 py-2 duration-300 hover:bg-slate-700',
         {
           'bg-blue-900': path === link,
         },

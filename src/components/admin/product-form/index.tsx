@@ -7,6 +7,13 @@ import { z } from 'zod'
 
 import Loader from '@/components/loader'
 import InputField from '@/components/ui/input-field'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import TextAreaField from '@/components/ui/textarea-field'
 import useProduct from '@/hooks/useProduct'
 import FullScreenLayout from '@/layouts/full-screen-layout'
@@ -84,6 +91,22 @@ const ProductForm = () => {
       </div>
       <InputField {...register('price')} label="Price" type="number" errors={errors} />
       <InputField {...register('quantity')} label="Quantity" type="number" errors={errors} />
+      <Select>
+        <SelectTrigger className="col-span-2">
+          <SelectValue placeholder="Theme" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem className="bg-black" value="light">
+            Light
+          </SelectItem>
+          <SelectItem className="bg-black" value="dark">
+            Dark
+          </SelectItem>
+          <SelectItem className="bg-black" value="system">
+            System
+          </SelectItem>
+        </SelectContent>
+      </Select>
     </form>
   )
 }

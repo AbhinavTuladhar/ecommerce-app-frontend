@@ -1,8 +1,11 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React from 'react'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
+import { GoPlus } from 'react-icons/go'
 
+import Button from '@/components/ui/button'
 import Input from '@/components/ui/input'
 import ProductService from '@/services/product.service'
 import { useQuery } from '@tanstack/react-query'
@@ -20,16 +23,10 @@ const Page = () => {
     retry: false,
   })
 
-  const { register, watch } = useForm<{ searchString: string }>({
+  const { register } = useForm<{ searchString: string }>({
     defaultValues: { searchString: '' },
     mode: 'onChange',
   })
-
-  const formValues = watch()
-
-  useEffect(() => {
-    console.log(formValues)
-  }, [formValues])
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -46,13 +43,23 @@ const Page = () => {
   const { data: productData } = products
 
   return (
-    <div>
+    <>
       <div className="flex justify-between">
         <h2> Product List</h2>
         <Input {...register('searchString')} />
       </div>
       <ProductTable productData={productData} />
-    </div>
+      <div className="flex justify-end">
+        <Link href="/admin/products/add">
+          <Button variant="dashed">
+            <div className="flex items-center gap-x-1">
+              <GoPlus className="text-xl" />
+              <span className="text-sm">Add product</span>
+            </div>
+          </Button>
+        </Link>
+      </div>
+    </>
   )
 }
 

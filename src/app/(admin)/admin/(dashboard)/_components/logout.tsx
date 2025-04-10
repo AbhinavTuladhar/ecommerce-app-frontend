@@ -31,7 +31,7 @@ const Logout = () => {
     <>
       <div className="py-2">
         <button
-          className="flex w-full cursor-pointer items-center gap-x-2 px-4 py-4 duration-300 hover:bg-blue-900"
+          className="flex w-full cursor-pointer items-center gap-x-2 px-4 py-4 duration-300 hover:bg-slate-700"
           onClick={openModal}
         >
           <IoIosLogOut className="text-2xl" />
