@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import TextAreaField from '@/components/ui/textarea-field'
+import useCategories from '@/hooks/useCategories'
 import useProduct from '@/hooks/useProduct'
 import FullScreenLayout from '@/layouts/full-screen-layout'
 import { ProductSchema } from '@/types/schema'
@@ -44,6 +45,8 @@ const ProductForm = () => {
   } = useProduct(params.id, {
     enabled: isEditing,
   })
+
+  const { data: categoryData, isLoading: isLoadingCategories } = useCategories()
 
   useEffect(() => {
     if (!productData) return
@@ -79,7 +82,13 @@ const ProductForm = () => {
   return (
     <form className="grid grid-cols-2 gap-x-10 gap-y-0">
       <div className="col-span-2">
-        <InputField {...register('name')} label="Product Name" type="text" errors={errors} />
+        <InputField
+          {...register('name')}
+          label="Product Name"
+          placeholder="Product Name"
+          type="text"
+          errors={errors}
+        />
       </div>
       <div className="col-span-2">
         <TextAreaField
@@ -89,23 +98,37 @@ const ProductForm = () => {
           errors={errors}
         />
       </div>
-      <InputField {...register('price')} label="Price" type="number" errors={errors} />
-      <InputField {...register('quantity')} label="Quantity" type="number" errors={errors} />
+      <InputField
+        {...register('price')}
+        label="Price"
+        type="number"
+        placeholder="Product price (Rs.) "
+        errors={errors}
+      />
+      <InputField
+        {...register('quantity')}
+        label="Quantity"
+        placeholder="Product Quantity"
+        type="number"
+        errors={errors}
+      />
       <Select>
-        <SelectTrigger className="col-span-2">
-          <SelectValue placeholder="Theme" />
+        <SelectTrigger className="col-span-2 bg-slate-700">
+          <SelectValue placeholder="Category" />
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem className="bg-black" value="light">
-            Light
-          </SelectItem>
-          <SelectItem className="bg-black" value="dark">
-            Dark
-          </SelectItem>
-          <SelectItem className="bg-black" value="system">
-            System
-          </SelectItem>
-        </SelectContent>
+        {isLoadingCategories ? null : (
+          <SelectContent className="bg-slate-700">
+            {categoryData?.data.map(category => (
+              <SelectItem
+                className="cursor-pointer duration-300 hover:bg-blue-800"
+                key={category.id}
+                value={category.id}
+              >
+                {category.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        )}
       </Select>
     </form>
   )
