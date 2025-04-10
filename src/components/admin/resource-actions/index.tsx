@@ -5,7 +5,7 @@ import { TiEdit } from 'react-icons/ti'
 
 import useToggle from '@/hooks/useToggle'
 
-import ConfirmationModal from '../ui/confirmation-modal'
+import ConfirmationModal from '../../ui/confirmation-modal'
 
 interface AdminProps {
   editLink: string

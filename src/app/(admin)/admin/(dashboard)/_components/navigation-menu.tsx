@@ -21,8 +21,6 @@ const menuLinks: MenuItemProps[] = [
 const NavigationMenuItem: FC<MenuItemProps> = ({ Icon, label, link }) => {
   const path = usePathname().split('/admin')[1]
 
-  console.log(path)
-
   return (
     <Link
       href={`/admin/${link}`}

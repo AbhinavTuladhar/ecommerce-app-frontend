@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { toast } from 'react-toastify'
 
+import ResourceActions from '@/components/admin/resource-actions'
 import ImageWithFallback from '@/components/image-with-fallback'
-import ResourceActions from '@/components/resource-actions'
 import {
   Table,
   TableBody,
@@ -48,7 +48,7 @@ const ProductRow: FC<ProductRowProps> = ({
     <TableCell>{quantity}</TableCell>
     <TableCell>{category.name}</TableCell>
     <TableCell>
-      <ResourceActions editLink={`/admin/products/${id}`} onDelete={() => onDelete(id)} />
+      <ResourceActions editLink={`/admin/products/edit/${id}`} onDelete={() => onDelete(id)} />
     </TableCell>
   </TableRow>
 )

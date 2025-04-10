@@ -5,27 +5,25 @@ import { FieldErrors, FieldName, FieldValues, UseFormReturn } from 'react-hook-f
 
 import { ErrorMessage, FieldValuesFromFieldErrors } from '@hookform/error-message'
 
-import Input from './input'
+import TextArea from './textarea'
 
 interface InputProps<InputValues extends FieldValues>
   extends Partial<UseFormReturn<InputValues>>,
-    InputHTMLAttributes<HTMLInputElement> {
+    InputHTMLAttributes<HTMLTextAreaElement> {
   name: FieldName<FieldValuesFromFieldErrors<FieldErrors<InputValues>>>
   label?: string
   errors?: FieldErrors<InputValues>
 }
 
-const InputField = <InputValues extends FieldValues>({
+const TextAreaField = <InputValues extends FieldValues>({
   label,
   errors,
   ...props
 }: InputProps<InputValues>) => {
-  console.log(errors)
-
   return (
     <div className="flex flex-col gap-y-1">
       {label ? <label className="text-sm">{label}</label> : null}
-      <Input {...props} />
+      <TextArea {...props} />
       <span className="h-5 min-h-5">
         <ErrorMessage
           errors={errors}
@@ -37,4 +35,4 @@ const InputField = <InputValues extends FieldValues>({
   )
 }
 
-export default InputField
+export default TextAreaField

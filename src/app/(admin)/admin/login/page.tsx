@@ -2,10 +2,11 @@
 
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
+import Loader from '@/components/loader'
 import Button from '@/components/ui/button'
 import InputField from '@/components/ui/input-field'
 import useCurrentUser from '@/hooks/useCurrentUser'
@@ -19,11 +20,14 @@ type LoginFormValues = z.infer<typeof LoginSchema>
 const LoginForm = () => {
   const router = useRouter()
 
-  const methods = useForm<LoginFormValues>({
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
   })
-
-  const { register, handleSubmit, setError } = methods
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
@@ -44,13 +48,11 @@ const LoginForm = () => {
   return (
     <div className="w-100 max-w-[calc(100vw-2rem)] space-y-8 rounded-lg border border-gray-500 bg-slate-800 px-10 py-20">
       <h2 className="text-3xl font-bold"> Login as Admin </h2>
-      <FormProvider {...methods}>
-        <form className="grid gap-0" onSubmit={handleSubmit(onSubmit)}>
-          <InputField {...register('email')} label="Email" type="email" />
-          <InputField {...register('password')} label="Password" type="password" />
-          <Button className="mt-2"> Login </Button>
-        </form>
-      </FormProvider>
+      <form className="grid gap-0" onSubmit={handleSubmit(onSubmit)}>
+        <InputField {...register('email')} label="Email" type="email" errors={errors} />
+        <InputField {...register('password')} label="Password" type="password" errors={errors} />
+        <Button className="mt-2"> Login </Button>
+      </form>
     </div>
   )
 }
@@ -69,7 +71,11 @@ const AdminLogin = () => {
   }, [isError, isLoading, push])
 
   if (isLoading) {
-    return <FullScreenLayout> Loading...</FullScreenLayout>
+    return (
+      <FullScreenLayout>
+        <Loader />
+      </FullScreenLayout>
+    )
   }
 
   if (!isError) {
