@@ -20,8 +20,6 @@ const InputField = <InputValues extends FieldValues>({
   errors,
   ...props
 }: InputProps<InputValues>) => {
-  console.log(errors)
-
   return (
     <div className="flex flex-col gap-y-1">
       {label ? <label className="text-sm">{label}</label> : null}
