@@ -20,6 +20,15 @@ class ProductService {
       console.error(error)
     }
   }
+
+  static async deleteProduct(id: string) {
+    try {
+      const response = await Api.delete(`/product/${id}`)
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }
 
 export default ProductService

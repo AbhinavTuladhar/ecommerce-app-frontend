@@ -10,6 +10,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-blue-600 hover:bg-blue-500',
         danger: 'bg-red-600 hover:bg-red-500',
+        dashed: 'bg-transparent border border-blue-500 border-dashed hover:bg-blue-500',
       },
       size: {
         default: 'px-4 py-3',

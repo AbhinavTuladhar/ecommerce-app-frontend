@@ -2,8 +2,7 @@ import { useRouter } from 'next/navigation'
 import { IoIosLogOut } from 'react-icons/io'
 import { toast } from 'react-toastify'
 
-import Button from '@/components/ui/button'
-import Modal from '@/components/ui/modal'
+import ConfirmationModal from '@/components/ui/confirmation-modal'
 import useToggle from '@/hooks/useToggle'
 import AuthService from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
@@ -32,26 +31,20 @@ const Logout = () => {
     <>
       <div className="py-2">
         <button
-          className="flex w-full cursor-pointer items-center gap-x-2 px-4 py-4 duration-300 hover:bg-blue-900"
+          className="flex w-full cursor-pointer items-center gap-x-2 px-4 py-4 duration-300 hover:bg-slate-700"
           onClick={openModal}
         >
           <IoIosLogOut className="text-2xl" />
           <span> Logout </span>
         </button>
       </div>
-      <Modal isOpen={isModalOpen} closeModal={closeModal}>
-        <div className="flex flex-col gap-y-4">
-          <h2 className="text-3xl font-bold text-slate-700">Are you sure you want to log out?</h2>
-          <div className="flex justify-center gap-x-10">
-            <Button size="sm" onClick={closeModal}>
-              Cancel
-            </Button>
-            <Button variant="danger" size="sm" onClick={handleLogout}>
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </Modal>
+
+      <ConfirmationModal
+        actionHandler={handleLogout}
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        modalTitle="Are you sure you want to log out?"
+      />
     </>
   )
 }
