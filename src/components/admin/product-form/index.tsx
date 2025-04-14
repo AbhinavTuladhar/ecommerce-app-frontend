@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -35,6 +35,9 @@ const ProductForm = () => {
   // For invalidating the product list
   const queryClient = useQueryClient()
 
+  // For setting the default value of the select dropdown correctly
+  const [isFormReady, setIsFormReady] = useState(false)
+
   const {
     control,
     register,
@@ -60,14 +63,18 @@ const ProductForm = () => {
       console.log(data)
       toast.success('Product successfully created!', { toastId: 'product-created' })
       queryClient.invalidateQueries({ queryKey: ['products'] })
-      reset()
+
+      // Only clear the form if the admin is creating a product.
+      if (!isEditing) {
+        reset()
+      }
     } catch (error) {
       console.error(error)
     }
   }
 
   useEffect(() => {
-    if (!productData) return
+    if (!productData || !categoryData) return
 
     const { category, description, image, name, price, quantity } = productData.data
 
@@ -76,12 +83,14 @@ const ProductForm = () => {
       description,
       price,
       quantity,
-      category: category.id,
+      category: category.id.toString(),
       image: image || '',
     })
-  }, [reset, productData])
 
-  if (isLoading) {
+    setIsFormReady(true)
+  }, [reset, productData, categoryData])
+
+  if (isLoading || isLoadingCategories) {
     return (
       <FullScreenLayout>
         <Loader />
@@ -95,6 +104,14 @@ const ProductForm = () => {
 
   if (!productData && isEditing) {
     return <div>No data</div>
+  }
+
+  if (!isFormReady && isEditing) {
+    return (
+      <FullScreenLayout>
+        <Loader />
+      </FullScreenLayout>
+    )
   }
 
   return (
@@ -139,19 +156,17 @@ const ProductForm = () => {
               <SelectTrigger className="bg-slate-700">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
-              {isLoadingCategories ? null : (
-                <SelectContent className="bg-slate-700">
-                  {categoryData?.data.map(category => (
-                    <SelectItem
-                      className="cursor-pointer duration-300 hover:bg-blue-800"
-                      key={category.id}
-                      value={category.id}
-                    >
-                      {category.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              )}
+              <SelectContent className="bg-slate-700">
+                {categoryData?.data.map(category => (
+                  <SelectItem
+                    className="cursor-pointer duration-300 hover:bg-blue-800"
+                    key={category.id.toString()}
+                    value={category.id.toString()}
+                  >
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
               <div className="h-5 min-h-5">
                 <ErrorMessage
                   errors={errors}
