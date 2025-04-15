@@ -215,7 +215,7 @@ const ProductForm = () => {
       </div>
       <div className="col-span-2 flex flex-col gap-y-1">
         <span className="text-sm"> Image </span>
-        <ImageUpload onFileSelect={setFile} />
+        <ImageUpload onFileSelect={setFile} initialImage={productData?.data.image} />
       </div>
       <div className="col-span-2 flex justify-end">
         <Button type="submit" className="mt-4 w-min">

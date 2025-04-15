@@ -11,11 +11,14 @@ const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 const MAX_SIZE_MB = 5
 
 interface ImageUploadProps {
+  initialImage?: string | null
   onFileSelect: (file: File | null) => void
 }
 
-const ImageUpload: FC<ImageUploadProps> = ({ onFileSelect }) => {
-  const [image, setImage] = useState<string | null>(null)
+const ImageUpload: FC<ImageUploadProps> = ({ initialImage, onFileSelect }) => {
+  const [image, setImage] = useState<string | null>(() =>
+    initialImage ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${initialImage}` : null,
+  )
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -55,11 +58,16 @@ const ImageUpload: FC<ImageUploadProps> = ({ onFileSelect }) => {
     inputRef?.current?.click()
   }
 
+  const handleImageRemove = () => {
+    setFile(null)
+    setImage(null)
+  }
+
   return (
     <>
       <div className="grid place-items-center gap-y-4 rounded-lg border border-dashed border-gray-300 bg-slate-700 py-6">
-        {file && image ? (
-          <ImagePreview source={image} handleRemove={() => setFile(null)} />
+        {image ? (
+          <ImagePreview source={image} handleRemove={handleImageRemove} />
         ) : (
           <ImagePrompt handleClick={handleInputClick} />
         )}
@@ -86,6 +94,7 @@ const ImagePreview: FC<ImagePreviewProps> = ({ source, handleRemove }) => (
     <Image src={source} alt="preview" width={0} height={0} className="w-full max-w-200" />
     <button
       onClick={handleRemove}
+      type="button"
       className="absolute top-0 right-0 grid size-6 cursor-pointer place-items-center rounded-full bg-white text-black opacity-0 duration-400 group-hover:opacity-100 hover:text-gray-500"
     >
       x
