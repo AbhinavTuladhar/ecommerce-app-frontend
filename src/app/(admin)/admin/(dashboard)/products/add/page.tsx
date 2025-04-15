@@ -7,7 +7,7 @@ import AdminFormContainer from '@/layouts/admin-form-container'
 
 const AddProduct = () => {
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-y-6">
       <h2 className="text-3xl font-bold"> Create a New Product</h2>
       <AdminFormContainer>
         <ProductForm />

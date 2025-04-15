@@ -1,0 +1,74 @@
+'use client'
+
+import React, { ChangeEvent, FC, useRef, useState } from 'react'
+import Image from 'next/image'
+import { BsCloudUploadFill } from 'react-icons/bs'
+
+import Button from './button'
+
+const ImageUpload = () => {
+  const [file, setFile] = useState<File | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileInput = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFile(event.target.files[0])
+    }
+  }
+
+  // Using a ref to simulate a click on the hidden file upload input element.
+  const handleInputClick = () => {
+    inputRef?.current?.click()
+  }
+
+  return (
+    <>
+      <div className="grid place-items-center gap-y-4 rounded-lg border border-dashed border-gray-300 bg-slate-700 py-6">
+        {file ? (
+          <ImagePreview source={URL.createObjectURL(file)} handleRemove={() => setFile(null)} />
+        ) : (
+          <ImagePrompt handleClick={handleInputClick} />
+        )}
+      </div>
+      <input ref={inputRef} type="file" onChange={handleFileInput} className="hidden" />
+      {file ? JSON.stringify(file, null, 2) : null}
+    </>
+  )
+}
+
+interface ImagePreviewProps {
+  source: string
+  handleRemove: () => void
+}
+
+const ImagePreview: FC<ImagePreviewProps> = ({ source, handleRemove }) => (
+  <div className="group relative">
+    <Image src={source} alt="preview" width={0} height={0} className="w-full max-w-200" />
+    <button
+      onClick={handleRemove}
+      className="absolute top-0 right-0 grid size-6 cursor-pointer place-items-center rounded-full bg-white text-black opacity-0 duration-400 group-hover:opacity-100 hover:text-gray-500"
+    >
+      x
+    </button>
+  </div>
+)
+
+interface ImagePromptProps {
+  handleClick: () => void
+}
+
+const ImagePrompt: FC<ImagePromptProps> = ({ handleClick }) => {
+  return (
+    <>
+      <BsCloudUploadFill className="text-6xl" />
+      <Button type="button" variant="default" onClick={handleClick}>
+        Upload an image
+      </Button>
+      <span className="text-sm font-bold text-gray-400">
+        Supported types: jpeg, jpg, png, webp. Max 10MB.
+      </span>
+    </>
+  )
+}
+
+export default ImageUpload

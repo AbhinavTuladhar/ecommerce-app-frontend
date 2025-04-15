@@ -18,7 +18,7 @@ export default function AdminLayout({
     <AdminGuard>
       <div className="grid flex-1 grid-cols-[260px_1fr]">
         <AdminSidebar />
-        <div className="px-10 py-4">{children}</div>
+        <div className="flex flex-col px-10 py-4">{children}</div>
       </div>
     </AdminGuard>
   )

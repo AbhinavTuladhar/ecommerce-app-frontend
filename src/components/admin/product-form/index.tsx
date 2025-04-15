@@ -8,6 +8,7 @@ import { z } from 'zod'
 
 import Loader from '@/components/loader'
 import Button from '@/components/ui/button'
+import ImageUpload from '@/components/ui/image-upload'
 import InputField from '@/components/ui/input-field'
 import {
   Select,
@@ -178,9 +179,14 @@ const ProductForm = () => {
           )}
         />
       </div>
-      <Button type="submit" className="mt-4 w-min">
-        Submit
-      </Button>
+      <div className="col-span-2">
+        <ImageUpload />
+      </div>
+      <div className="col-span-2 flex justify-end">
+        <Button type="submit" className="mt-4 w-min">
+          Submit
+        </Button>
+      </div>
     </form>
   )
 }
