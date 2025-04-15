@@ -3,9 +3,17 @@
 import React from 'react'
 
 import ProductForm from '@/components/admin/product-form'
+import AdminFormContainer from '@/layouts/admin-form-container'
 
-const ProductEdit = () => {
-  return <ProductForm />
+const AddProduct = () => {
+  return (
+    <div className="flex flex-col gap-y-6">
+      <h2 className="text-3xl font-bold"> Edit Product</h2>
+      <AdminFormContainer>
+        <ProductForm />
+      </AdminFormContainer>
+    </div>
+  )
 }
 
-export default ProductEdit
+export default AddProduct
