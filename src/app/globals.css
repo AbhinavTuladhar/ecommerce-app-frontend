@@ -34,7 +34,8 @@
   --content-width: min(var(--max-width), 100% - ((var(--gap) + var(--feature)) * 2));
 }
 
-html {
+html,
+body {
   scrollbar-gutter: stable;
 }
 

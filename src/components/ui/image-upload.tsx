@@ -10,7 +10,12 @@ import Button from './button'
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 const MAX_SIZE_MB = 5
 
-const ImageUpload = () => {
+interface ImageUploadProps {
+  onFileSelect: (file: File | null) => void
+}
+
+const ImageUpload: FC<ImageUploadProps> = ({ onFileSelect }) => {
+  const [image, setImage] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -29,6 +34,8 @@ const ImageUpload = () => {
     }
 
     setFile(file)
+    onFileSelect(file)
+    setImage(URL.createObjectURL(file))
   }
 
   const validateImageFile = (file: File) => {
@@ -51,8 +58,8 @@ const ImageUpload = () => {
   return (
     <>
       <div className="grid place-items-center gap-y-4 rounded-lg border border-dashed border-gray-300 bg-slate-700 py-6">
-        {file ? (
-          <ImagePreview source={URL.createObjectURL(file)} handleRemove={() => setFile(null)} />
+        {file && image ? (
+          <ImagePreview source={image} handleRemove={() => setFile(null)} />
         ) : (
           <ImagePrompt handleClick={handleInputClick} />
         )}

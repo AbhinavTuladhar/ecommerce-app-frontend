@@ -21,10 +21,11 @@ import TextAreaField from '@/components/ui/textarea-field'
 import useCategories from '@/hooks/useCategories'
 import useProduct from '@/hooks/useProduct'
 import FullScreenLayout from '@/layouts/full-screen-layout'
+import ImageUploadService from '@/services/image-upload.service'
 import { ProductSchema } from '@/types/schema'
 import { ErrorMessage } from '@hookform/error-message'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 type ProductFormValues = z.infer<typeof ProductSchema>
 
@@ -39,11 +40,27 @@ const ProductForm = () => {
   // For setting the default value of the select dropdown correctly
   const [isFormReady, setIsFormReady] = useState(false)
 
+  // For the image upload component
+  const [file, setFile] = useState<File | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | undefined>()
+
+  // For the file upload
+  const { mutate: uploadImage } = useMutation({
+    mutationFn: ImageUploadService.uploadImage,
+    onSuccess: data => {
+      setImageUrl(data.filePath)
+    },
+    onError: error => {
+      console.error(error)
+    },
+  })
+
   const {
     control,
     register,
     reset,
     formState: { errors },
+    setValue,
     handleSubmit,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(ProductSchema),
@@ -61,14 +78,25 @@ const ProductForm = () => {
 
   const onSubmit = (data: ProductFormValues) => {
     try {
-      console.log(data)
-      toast.success('Product successfully created!', { toastId: 'product-created' })
-      queryClient.invalidateQueries({ queryKey: ['products'] })
-
       // Only clear the form if the admin is creating a product.
       if (!isEditing) {
         reset()
       }
+
+      if (file) {
+        uploadImage(file)
+        toast.success('Image uploaded successfully!')
+      }
+
+      setValue('image', imageUrl || '')
+
+      const finalData: ProductFormValues = {
+        ...data,
+        image: imageUrl,
+      }
+      console.log(finalData)
+      toast.success('Product successfully created!', { toastId: 'product-created' })
+      queryClient.invalidateQueries({ queryKey: ['products'] })
     } catch (error) {
       console.error(error)
     }
@@ -187,7 +215,7 @@ const ProductForm = () => {
       </div>
       <div className="col-span-2 flex flex-col gap-y-1">
         <span className="text-sm"> Image </span>
-        <ImageUpload />
+        <ImageUpload onFileSelect={setFile} />
       </div>
       <div className="col-span-2 flex justify-end">
         <Button type="submit" className="mt-4 w-min">
