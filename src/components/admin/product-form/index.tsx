@@ -124,6 +124,7 @@ const ProductForm = () => {
           placeholder="Product Name"
           type="text"
           errors={errors}
+          required
         />
       </div>
       <div className="col-span-2">
@@ -140,6 +141,7 @@ const ProductForm = () => {
         type="number"
         placeholder="Price (Rs.) "
         errors={errors}
+        required
       />
       <InputField
         {...register('quantity', { valueAsNumber: true })}
@@ -147,8 +149,12 @@ const ProductForm = () => {
         placeholder="Quantity"
         type="number"
         errors={errors}
+        required
       />
       <div className="col-span-2">
+        <span className="text-sm">
+          Category <span className="text-red-400"> * </span>
+        </span>
         <Controller
           control={control}
           name="category"
@@ -179,7 +185,8 @@ const ProductForm = () => {
           )}
         />
       </div>
-      <div className="col-span-2">
+      <div className="col-span-2 flex flex-col gap-y-1">
+        <span className="text-sm"> Image </span>
         <ImageUpload />
       </div>
       <div className="col-span-2 flex justify-end">

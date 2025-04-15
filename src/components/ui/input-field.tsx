@@ -18,11 +18,17 @@ interface InputProps<InputValues extends FieldValues>
 const InputField = <InputValues extends FieldValues>({
   label,
   errors,
+  required,
   ...props
 }: InputProps<InputValues>) => {
   return (
     <div className="flex flex-col gap-y-1">
-      {label ? <label className="text-sm">{label}</label> : null}
+      {label ? (
+        <span className="space-x-1">
+          <label className="text-sm">{label}</label>
+          {required && <span className="text-sm text-red-400">*</span>}
+        </span>
+      ) : null}
       <Input {...props} />
       <span className="h-5 min-h-5">
         <ErrorMessage
