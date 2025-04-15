@@ -3,17 +3,44 @@
 import React, { ChangeEvent, FC, useRef, useState } from 'react'
 import Image from 'next/image'
 import { BsCloudUploadFill } from 'react-icons/bs'
+import { toast } from 'react-toastify'
 
 import Button from './button'
+
+const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+const MAX_SIZE_MB = 5
 
 const ImageUpload = () => {
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleFileInput = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setFile(event.target.files[0])
+    const file = event.target.files?.[0]
+
+    if (!file) {
+      return
     }
+
+    const error = validateImageFile(file)
+
+    if (error) {
+      toast.error(error)
+      return
+    }
+
+    setFile(file)
+  }
+
+  const validateImageFile = (file: File) => {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return 'Unsupported file type. Supported types: jpeg, jpg, png, webp.'
+    }
+
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      return `File size is too large. Max size: ${MAX_SIZE_MB}MB.`
+    }
+
+    return null
   }
 
   // Using a ref to simulate a click on the hidden file upload input element.
@@ -30,7 +57,13 @@ const ImageUpload = () => {
           <ImagePrompt handleClick={handleInputClick} />
         )}
       </div>
-      <input ref={inputRef} type="file" onChange={handleFileInput} className="hidden" />
+      <input
+        ref={inputRef}
+        type="file"
+        onChange={handleFileInput}
+        className="hidden"
+        accept=".jpeg, .jpg, .png, .webp"
+      />
       {file ? JSON.stringify(file, null, 2) : null}
     </>
   )
