@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
@@ -22,6 +22,8 @@ import useCategories from '@/hooks/useCategories'
 import useProduct from '@/hooks/useProduct'
 import FullScreenLayout from '@/layouts/full-screen-layout'
 import ImageUploadService from '@/services/image-upload.service'
+import ProductService from '@/services/product.service'
+import { ProductCreation } from '@/types'
 import { ProductSchema } from '@/types/schema'
 import { ErrorMessage } from '@hookform/error-message'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -31,6 +33,8 @@ type ProductFormValues = z.infer<typeof ProductSchema>
 
 const ProductForm = () => {
   const params = useParams() as { id: string }
+  const router = useRouter()
+
   // Fetch data of single product if editing to populate the form.
   const isEditing = Boolean(params?.id)
 
@@ -42,16 +46,24 @@ const ProductForm = () => {
 
   // For the image upload component
   const [file, setFile] = useState<File | null>(null)
-  const [imageUrl, setImageUrl] = useState<string | undefined>()
 
   // For the file upload
-  const { mutate: uploadImage } = useMutation({
+  const { mutateAsync: uploadImage } = useMutation({
     mutationFn: ImageUploadService.uploadImage,
-    onSuccess: data => {
-      setImageUrl(data.filePath)
+    onError: error => {
+      console.error(error)
+    },
+  })
+
+  // Product creation
+  const { mutateAsync: createProduct } = useMutation({
+    mutationFn: ProductService.createProduct,
+    onSuccess: () => {
+      toast.success('Product successfully created!')
     },
     onError: error => {
       console.error(error)
+      toast.error('Could not create product.')
     },
   })
 
@@ -60,7 +72,6 @@ const ProductForm = () => {
     register,
     reset,
     formState: { errors },
-    setValue,
     handleSubmit,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(ProductSchema),
@@ -76,26 +87,31 @@ const ProductForm = () => {
 
   const { data: categoryData, isLoading: isLoadingCategories } = useCategories()
 
-  const onSubmit = (data: ProductFormValues) => {
+  const onSubmit = async (data: ProductFormValues) => {
     try {
-      // Only clear the form if the admin is creating a product.
-      if (!isEditing) {
-        reset()
-      }
+      // State is not used because of its async nature
+      let uploadedImageUrl
 
       if (file) {
-        uploadImage(file)
-        toast.success('Image uploaded successfully!')
+        const result = await uploadImage(file)
+        uploadedImageUrl = result.filePath
       }
 
-      setValue('image', imageUrl || '')
-
-      const finalData: ProductFormValues = {
+      const finalData: ProductCreation = {
         ...data,
-        image: imageUrl,
+        categoryId: data.category,
+        image: uploadedImageUrl,
       }
-      console.log(finalData)
-      toast.success('Product successfully created!', { toastId: 'product-created' })
+
+      // Only product creation for now.
+      if (!isEditing) {
+        await createProduct(finalData)
+
+        setTimeout(() => {
+          router.push('/admin/products')
+        }, 1000)
+      }
+
       queryClient.invalidateQueries({ queryKey: ['products'] })
     } catch (error) {
       console.error(error)
@@ -135,13 +151,7 @@ const ProductForm = () => {
     return <div>No data</div>
   }
 
-  if (!isFormReady && isEditing) {
-    return (
-      <FullScreenLayout>
-        <Loader />
-      </FullScreenLayout>
-    )
-  }
+  if (!isFormReady && isEditing) return null
 
   return (
     <form className="grid grid-cols-2 gap-x-10 gap-y-1" onSubmit={handleSubmit(onSubmit)}>

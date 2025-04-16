@@ -1,4 +1,4 @@
-import { Product, SuccessResponse } from '@/types'
+import { Product, ProductCreation, SuccessResponse } from '@/types'
 
 import Api from './api'
 
@@ -19,6 +19,11 @@ class ProductService {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  static async createProduct(product: ProductCreation) {
+    const response = await Api.post('/product', product)
+    return response
   }
 
   static async deleteProduct(id: string) {
