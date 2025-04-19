@@ -10,3 +10,17 @@ export interface Product {
     name: string
   }
 }
+
+export interface FileUploadResponse {
+  filePath: string
+  message: string
+}
+
+export interface ProductCreation {
+  name: string
+  description?: string
+  price: number
+  quantity: number
+  categoryId: string
+  image?: string
+}
