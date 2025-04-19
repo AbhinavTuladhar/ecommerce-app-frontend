@@ -46,6 +46,7 @@ const ProductForm = () => {
 
   // For the image upload component
   const [file, setFile] = useState<File | null>(null)
+  const [removeImageFlag, setRemoveImageFlag] = useState(false)
 
   // For the file upload
   const { mutateAsync: uploadImage } = useMutation({
@@ -64,6 +65,18 @@ const ProductForm = () => {
     onError: error => {
       console.error(error)
       toast.error('Could not create product.')
+    },
+  })
+
+  // Product update
+  const { mutateAsync: updateProduct } = useMutation({
+    mutationFn: ProductService.updateProduct,
+    onSuccess: () => {
+      toast.success('Product successfully updated!')
+    },
+    onError: error => {
+      console.error(error)
+      toast.error('Could not update product.')
     },
   })
 
@@ -90,9 +103,11 @@ const ProductForm = () => {
   const onSubmit = async (data: ProductFormValues) => {
     try {
       // State is not used because of its async nature
-      let uploadedImageUrl
+      let uploadedImageUrl = productData?.data.image
 
-      if (file) {
+      if (removeImageFlag) {
+        uploadedImageUrl = null
+      } else if (file) {
         const result = await uploadImage(file)
         uploadedImageUrl = result.filePath
       }
@@ -100,16 +115,18 @@ const ProductForm = () => {
       const finalData: ProductCreation = {
         ...data,
         categoryId: data.category,
-        image: uploadedImageUrl,
+        image: uploadedImageUrl || undefined,
       }
 
-      // Only product creation for now.
+      // If not editing, then create the product.
       if (!isEditing) {
         await createProduct(finalData)
 
         setTimeout(() => {
           router.push('/admin/products')
         }, 1000)
+      } else {
+        await updateProduct({ id: params.id, product: finalData })
       }
 
       queryClient.invalidateQueries({ queryKey: ['products'] })
@@ -225,7 +242,13 @@ const ProductForm = () => {
       </div>
       <div className="col-span-2 flex flex-col gap-y-1">
         <span className="text-sm"> Image </span>
-        <ImageUpload onFileSelect={setFile} initialImage={productData?.data.image} />
+        <ImageUpload
+          onFileSelect={file => {
+            setFile(file)
+          }}
+          initialImage={productData?.data.image}
+          onImageRemove={setRemoveImageFlag}
+        />
       </div>
       <div className="col-span-2 flex justify-end">
         <Button type="submit" className="mt-4 w-min">

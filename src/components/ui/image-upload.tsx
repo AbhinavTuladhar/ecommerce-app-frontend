@@ -13,9 +13,13 @@ const MAX_SIZE_MB = 5
 interface ImageUploadProps {
   initialImage?: string | null
   onFileSelect: (file: File | null) => void
+  /**
+   * Used to remove the image when the user wants to remove it.
+   */
+  onImageRemove: (flag: boolean) => void
 }
 
-const ImageUpload: FC<ImageUploadProps> = ({ initialImage, onFileSelect }) => {
+const ImageUpload: FC<ImageUploadProps> = ({ initialImage, onFileSelect, onImageRemove }) => {
   const [image, setImage] = useState<string | null>(() =>
     initialImage ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${initialImage}` : null,
   )
@@ -39,6 +43,7 @@ const ImageUpload: FC<ImageUploadProps> = ({ initialImage, onFileSelect }) => {
     setFile(file)
     onFileSelect(file)
     setImage(URL.createObjectURL(file))
+    onImageRemove(false)
   }
 
   const validateImageFile = (file: File) => {
@@ -61,6 +66,8 @@ const ImageUpload: FC<ImageUploadProps> = ({ initialImage, onFileSelect }) => {
   const handleImageRemove = () => {
     setFile(null)
     setImage(null)
+    onFileSelect(null)
+    onImageRemove(true)
   }
 
   return (

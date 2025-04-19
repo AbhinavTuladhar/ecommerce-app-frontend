@@ -2,6 +2,11 @@ import { Product, ProductCreation, SuccessResponse } from '@/types'
 
 import Api from './api'
 
+interface ProductUpdateProps {
+  id: string
+  product: Partial<ProductCreation>
+}
+
 class ProductService {
   static async getProducts() {
     try {
@@ -23,6 +28,11 @@ class ProductService {
 
   static async createProduct(product: ProductCreation) {
     const response = await Api.post('/product', product)
+    return response
+  }
+
+  static async updateProduct({ id, product }: ProductUpdateProps) {
+    const response = await Api.patch(`/product/${id}`, product)
     return response
   }
 
