@@ -77,6 +77,10 @@ export const ProductTable: FC<ProductTableProps> = ({ productData }) => {
     deleteProduct(id)
   }
 
+  if (productData.length === 0) {
+    return <h2 className="text-center text-3xl font-bold"> No products</h2>
+  }
+
   return (
     <Table>
       <TableHeader>

@@ -1,8 +1,7 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
 import { GoPlus } from 'react-icons/go'
 
 import Button from '@/components/ui/button'
@@ -23,10 +22,7 @@ const Page = () => {
     retry: false,
   })
 
-  const { register } = useForm<{ searchString: string }>({
-    defaultValues: { searchString: '' },
-    mode: 'onChange',
-  })
+  const [searchString, setSearchString] = useState('')
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -42,14 +38,24 @@ const Page = () => {
 
   const { data: productData } = products
 
+  const filteredProducts = productData.filter(product =>
+    product.name.toLowerCase().includes(searchString.toLowerCase()),
+  )
+
   return (
     <>
-      <div className="flex justify-between">
-        <h2> Product List</h2>
-        <Input {...register('searchString')} />
+      <div className="mb-4 flex justify-between">
+        <h2 className="text-2xl font-bold"> Product List</h2>
+        <div className="text-sm">
+          <Input
+            value={searchString}
+            onChange={e => setSearchString(e.target.value)}
+            placeholder="Search for a product..."
+          />
+        </div>
       </div>
-      <ProductTable productData={productData} />
-      <div className="flex justify-end">
+      <ProductTable productData={filteredProducts} />
+      <div className="mt-4 flex justify-end">
         <Link href="/admin/products/add">
           <Button variant="dashed">
             <div className="flex items-center gap-x-1">
