@@ -17,7 +17,7 @@ const Page = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['products'],
+    queryKey: ['product'],
     queryFn: () => ProductService.getProducts(),
     retry: false,
   })

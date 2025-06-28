@@ -8,7 +8,7 @@ const useProduct = (
   options?: Omit<UseQueryOptions<ProductQueryFnData>, 'queryKey' | 'queryFn'>,
 ) =>
   useQuery<ProductQueryFnData>({
-    queryKey: ['products', id],
+    queryKey: ['product', id],
     queryFn: () => ProductService.getProduct(id),
     ...options,
   })

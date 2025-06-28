@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 
 const ProductPage = () => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['products'],
+    queryKey: ['product'],
     queryFn: ProductService.getProducts,
   })
 

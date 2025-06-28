@@ -65,7 +65,7 @@ export const ProductTable: FC<ProductTableProps> = ({ productData }) => {
   const { mutate: deleteProduct } = useMutation({
     mutationFn: ProductService.deleteProduct,
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: ['products'] })
+      query.invalidateQueries({ queryKey: ['product'] })
       toast.success('Product deleted successfully')
     },
     onError: () => {

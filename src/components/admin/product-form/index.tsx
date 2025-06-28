@@ -129,7 +129,7 @@ const ProductForm = () => {
         await updateProduct({ id: params.id, product: finalData })
       }
 
-      queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ queryKey: ['product'] })
     } catch (error) {
       console.error(error)
     }
