@@ -135,6 +135,7 @@ const ProductForm = () => {
     }
   }
 
+  // For populating the form.
   useEffect(() => {
     if (!productData || !categoryData) return
 

@@ -21,7 +21,7 @@ const CategoryRow: FC<CategoryRowProps> = ({ id, name, productCount, onDelete })
     <TableCell>{name}</TableCell>
     <TableCell>{productCount}</TableCell>
     <TableCell>
-      <ResourceActions editLink={`/admin/categories/edit/${name}`} onDelete={() => onDelete(id)} />
+      <ResourceActions editLink={`/admin/categories/edit/${id}`} onDelete={() => onDelete(id)} />
     </TableCell>
   </TableRow>
 )
