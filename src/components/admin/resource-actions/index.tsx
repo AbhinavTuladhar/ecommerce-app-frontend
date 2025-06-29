@@ -8,6 +8,7 @@ import useToggle from '@/hooks/useToggle'
 import ConfirmationModal from '../../ui/confirmation-modal'
 
 interface AdminProps {
+  resourceName: string
   editLink: string
   onDelete: () => void
 }
@@ -21,7 +22,7 @@ const ActionButtonContainer: FC<HTMLAttributes<HTMLDivElement>> = ({ children, .
   </div>
 )
 
-const ResourceActions: FC<AdminProps> = ({ editLink, onDelete }) => {
+const ResourceActions: FC<AdminProps> = ({ resourceName, editLink, onDelete }) => {
   const { value: isModalOpen, setValue: openModal, resetValue: closeModal } = useToggle()
 
   const handleDelete = () => {
@@ -42,7 +43,7 @@ const ResourceActions: FC<AdminProps> = ({ editLink, onDelete }) => {
         </ActionButtonContainer>
       </div>
       <ConfirmationModal
-        modalTitle="Are you sure you want to delete this product?"
+        modalTitle={`Are you sure you want to delete this ${resourceName}?`}
         isModalOpen={isModalOpen}
         closeModal={closeModal}
         actionHandler={handleDelete}

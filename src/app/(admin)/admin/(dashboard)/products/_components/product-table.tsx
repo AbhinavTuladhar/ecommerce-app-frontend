@@ -48,7 +48,11 @@ const ProductRow: FC<ProductRowProps> = ({
     <TableCell>{quantity}</TableCell>
     <TableCell>{category.name}</TableCell>
     <TableCell>
-      <ResourceActions editLink={`/admin/products/edit/${id}`} onDelete={() => onDelete(id)} />
+      <ResourceActions
+        resourceName="product"
+        editLink={`/admin/products/edit/${id}`}
+        onDelete={() => onDelete(id)}
+      />
     </TableCell>
   </TableRow>
 )
@@ -65,7 +69,7 @@ export const ProductTable: FC<ProductTableProps> = ({ productData }) => {
   const { mutate: deleteProduct } = useMutation({
     mutationFn: ProductService.deleteProduct,
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: ['products'] })
+      query.invalidateQueries({ queryKey: ['product'] })
       toast.success('Product deleted successfully')
     },
     onError: () => {

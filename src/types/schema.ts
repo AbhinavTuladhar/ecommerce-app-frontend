@@ -13,3 +13,7 @@ export const ProductSchema = z.object({
   category: z.string().refine(value => value !== '', { message: 'Please select a category' }),
   image: z.string().optional(),
 })
+
+export const CategorySchema = z.object({
+  name: z.string().min(1, { message: 'Name is required.' }),
+})

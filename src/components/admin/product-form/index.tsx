@@ -129,12 +129,13 @@ const ProductForm = () => {
         await updateProduct({ id: params.id, product: finalData })
       }
 
-      queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ queryKey: ['product'] })
     } catch (error) {
       console.error(error)
     }
   }
 
+  // For populating the form.
   useEffect(() => {
     if (!productData || !categoryData) return
 
