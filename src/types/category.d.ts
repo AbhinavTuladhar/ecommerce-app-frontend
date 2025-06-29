@@ -3,3 +3,7 @@ export interface Category {
   name: string
   productCount: number
 }
+
+export interface CategoryCreation {
+  name: string
+}

@@ -48,7 +48,11 @@ const ProductRow: FC<ProductRowProps> = ({
     <TableCell>{quantity}</TableCell>
     <TableCell>{category.name}</TableCell>
     <TableCell>
-      <ResourceActions editLink={`/admin/products/edit/${id}`} onDelete={() => onDelete(id)} />
+      <ResourceActions
+        resourceName="product"
+        editLink={`/admin/products/edit/${id}`}
+        onDelete={() => onDelete(id)}
+      />
     </TableCell>
   </TableRow>
 )

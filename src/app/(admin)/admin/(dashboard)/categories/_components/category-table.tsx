@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { toast } from 'react-toastify'
 
 import ResourceActions from '@/components/admin/resource-actions'
 import {
@@ -9,8 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import CategoryService from '@/services/category.service'
 import { Category } from '@/types'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface CategoryRowProps extends Category {
   onDelete: (id: string) => void
@@ -21,7 +23,11 @@ const CategoryRow: FC<CategoryRowProps> = ({ id, name, productCount, onDelete })
     <TableCell>{name}</TableCell>
     <TableCell>{productCount}</TableCell>
     <TableCell>
-      <ResourceActions editLink={`/admin/categories/edit/${id}`} onDelete={() => onDelete(id)} />
+      <ResourceActions
+        resourceName="category"
+        editLink={`/admin/categories/edit/${id}`}
+        onDelete={() => onDelete(id)}
+      />
     </TableCell>
   </TableRow>
 )
@@ -34,6 +40,21 @@ export const CategoryTable: FC<CategoryTableProps> = ({ categoryData }) => {
   const queryClient = useQueryClient()
 
   const headerNames = ['Category', 'Products', 'Actions']
+
+  const { mutate: deleteCategory } = useMutation({
+    mutationFn: CategoryService.deleteCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['category'] })
+      toast.success('Category deleted successfully')
+    },
+    onError: () => {
+      toast.error('Category delete failed')
+    },
+  })
+
+  const handleDelete = (id: string) => {
+    deleteCategory(id)
+  }
 
   return (
     <Table>
@@ -53,7 +74,7 @@ export const CategoryTable: FC<CategoryTableProps> = ({ categoryData }) => {
             id={category.id}
             name={category.name}
             productCount={category.productCount}
-            onDelete={id => queryClient.invalidateQueries({ queryKey: ['category', id] })}
+            onDelete={handleDelete}
           />
         ))}
       </TableBody>

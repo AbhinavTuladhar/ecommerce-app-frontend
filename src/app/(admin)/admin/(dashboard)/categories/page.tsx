@@ -12,7 +12,7 @@ import { CategoryTable } from './_components'
 
 const CategoryPage = () => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['categories'],
+    queryKey: ['category'],
     queryFn: CategoryService.getCategories,
     retry: false,
   })
