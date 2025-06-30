@@ -41,6 +41,18 @@ const CategoryForm = () => {
     },
   })
 
+  // Category update
+  const { mutateAsync: updateCategory } = useMutation({
+    mutationFn: CategoryService.updateCategory,
+    onSuccess: () => {
+      toast.success('Category successfully updated!')
+    },
+    onError: error => {
+      console.error(error)
+      toast.error('Category update failed')
+    },
+  })
+
   const {
     register,
     reset,
@@ -60,6 +72,8 @@ const CategoryForm = () => {
       setTimeout(() => {
         router.push('/admin/categories')
       }, 1000)
+    } else {
+      await updateCategory({ id: params.id, name: data.name })
     }
 
     queryClient.invalidateQueries({ queryKey: ['category'] })
